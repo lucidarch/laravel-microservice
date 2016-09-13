@@ -1,3 +1,138 @@
+# Lucid • Microservice - Laravel
+
+With the emerging need for separation per concern, microservices emerged to be the trending progression
+of what used to be a monolithic application. Especially with Lucid, scale is one of the core concerns that
+a microservice is the natural progression of the architecture from its [monolithic counterpart](https://github.com/lucid-architecture/laravel).
+
+It is no coincidence that the different parts of a Lucid monolithic application are called a **Service**, for microservices
+are indeed the next progression when applications scale and reach that turning point. Having implemented your application
+using Lucid, the transition process will be logically simpler to think about and physically straight-forward to
+implement.
+
+## Installation
+To get rolling, you need to create a new project using Composer:
+```
+composer create-project lucid-arch/laravel-microservice my-project
+```
+
+## Getting Started
+This project ships with the [Lucid Console](https://github.com/lucid-architecture/laravel-console) which provides an interactive
+user interface and a command line interface that are useful for scaffolding and exploring Services, Features and Jobs.
+
+### Setup
+The `lucid` executable will be in `vendor/bin`. If you don't have `./vendor/bin/` as part of your `PATH` you will
+need to execute it using `./vendor/bin/lucid`, otherwise add it with the following command to be able to simply
+call `lucid`:
+
+```
+export PATH="./vendor/bin:$PATH"
+```
+
+For a list of all the commands that are available run `lucid` or see the [CLI Reference](https://github.com/lucid-architecture/laravel-console).
+
+### 1. Create a Feature
+This is the Feature that we will be serving when someone visits our `/users` route.
+```
+lucid make:feature ListUsers
+```
+
+### 2. Create a Job
+This Job will fetch the users from the database and will be used inside our Feature to serve them.
+```
+lucid make:job GetUsers user
+```
+
+Open the file that was generated at `app/Domains/User/GetUsersJob.php` and edit the `handle` method to this:
+
+```php
+public function handle()
+{
+    return [
+        ['name' => 'John Doe'],
+        ['name' => 'Jane Doe'],
+        ['name' => 'Tommy Atkins'],
+    ];
+}
+```
+
+In a real-world application you might want to fetch the users from a database, and here is the perfect place for that.
+Here's an example of fetching a list of users and providing the ability to specify the limit:
+
+```php
+use App\Data\Models\User;
+
+class GetUsersJob extends Job
+{
+    private $limit;
+
+    public function __construct($limit = 25)
+    {
+        $this->limit = $limit;
+    }
+
+    public function handle(User $user)
+    {
+        return $user->take($this->limit)->get();
+    }
+}
+```
+
+> NOTE: The namespace for models is `[app namespace]\Data\Models`
+
+### 3. Run The Job
+```php
+// ...
+use App\Domains\User\GetUsersJob;
+use App\Domains\Http\RespondWithJsonJob;
+// ...
+public function handle(Request $request)
+{
+    $users = $this->run(GetUsersJob::class);
+
+    return $this->run(new RespondWithJsonJob($users));
+}
+```
+
+The `RespondWithJsonJob` is one of the Jobs that were shipped with this project, it lives in the `Http` domain and is
+used to respond to a request in structured JSON format.
+
+### 4. Serve The Feature
+To be able to serve that Feature we need to create a route and a controller that does so.
+
+Generate a plain controller with the following command
+
+```
+lucid make:controller user
+```
+
+And we will have our `UserController` generated in `app/Http/Controllers/UserController.php` which we will use
+to serve our Feature in its `index` method.
+
+We just need to create a route that would delegate the request to our `index` method:
+
+```php
+// ...
+use App\Features\ListUsersFeature;
+// ...
+class UserController extends Controller
+{
+    public function get()
+    {
+        return $this->serve(ListUsersFeature::class);
+    }
+}
+```
+
+In `routes/web.php` add:
+
+```php
+Route::get('/users', 'UserController@index');
+```
+
+That's it! Now serve the application with `php artisan serve` and visit `http://localhost:8000/users`
+
+---
+
 # Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
