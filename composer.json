@@ -1,7 +1,7 @@
 {
     "name": "lucid-arch/laravel-microservice",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "The Laravel Framework implemented using the Lucid Architecture - as a Microservice.",
+    "keywords": ["framework", "laravel", "lucid", "microservices", "scaffold", "architecture"],
     "license": "MIT",
     "type": "project",
     "require": {
