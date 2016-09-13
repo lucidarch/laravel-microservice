@@ -118,7 +118,7 @@ use App\Features\ListUsersFeature;
 // ...
 class UserController extends Controller
 {
-    public function get()
+    public function index()
     {
         return $this->serve(ListUsersFeature::class);
     }
