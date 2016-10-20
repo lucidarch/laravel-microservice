@@ -11,6 +11,9 @@ implement.
 
 To see how it compares to the monolithic application and when to use which, check [Monolith vs. Microservice](#monolith-vs-microservice)
 
+### Join The Community on Slack
+[![Slack Status](https://lucid-slack.herokuapp.com/badge.svg)](https://lucid-slack.herokuapp.com)
+
 ##### The Lucid Architecture for Building Scalable Applications - Laracon EU 2016
 Check out my talk at LaraconEU 2016 where I introduce the concept and application of the Lucid architecture:
 [![Abed Halawi - The Lucid Architecture for Building Scalable Applications](http://img.youtube.com/vi/wSnM4JkyxPw/0.jpg)](http://www.youtube.com/watch?v=wSnM4JkyxPw "Abed Halawi - The Lucid Architecture for Building Scalable Applications")
