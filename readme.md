@@ -9,6 +9,15 @@ are indeed the next progression when applications scale and reach that turning p
 using Lucid, the transition process will be logically simpler to think about and physically straight-forward to
 implement.
 
+To see how it compares to the monolithic application and when to use which, check [Monolith vs. Microservice](#monolith-vs-microservice)
+
+### Join The Community on Slack
+[![Slack Status](https://lucid-slack.herokuapp.com/badge.svg)](https://lucid-slack.herokuapp.com)
+
+##### The Lucid Architecture for Building Scalable Applications - Laracon EU 2016
+Check out my talk at LaraconEU 2016 where I introduce the concept and application of the Lucid architecture:
+[![Abed Halawi - The Lucid Architecture for Building Scalable Applications](http://img.youtube.com/vi/wSnM4JkyxPw/0.jpg)](http://www.youtube.com/watch?v=wSnM4JkyxPw "Abed Halawi - The Lucid Architecture for Building Scalable Applications")
+
 ## Installation
 To get rolling, you need to create a new project using Composer:
 ```
@@ -116,7 +125,7 @@ use App\Features\ListUsersFeature;
 // ...
 class UserController extends Controller
 {
-    public function get()
+    public function index()
     {
         return $this->serve(ListUsersFeature::class);
     }
@@ -130,6 +139,39 @@ Route::get('/users', 'UserController@index');
 ```
 
 That's it! Now serve the application with `php artisan serve` and visit `http://localhost:8000/users`
+
+---
+
+## Monolith vs. Microservice
+In the monolith Lucid application we have multiple services (i.e. Api, Web) and these typically will exist in
+`src/Services/Api` and `src/Services/Web` respectively. With the microservice the `src` does not exist, since
+it is intended to be one service serving a single purpose, the `app` directory will do.
+It will hold the following directories:
+- **Data** For all your models, repositories and value objects.
+- **Domains** Holds the Domains and their Jobs.
+- **Features** The service's Features.
+
+### Directory Structure
+| Component | Monolith | Microservice |
+|---------|---------|--------------|
+|Job | src/Domains/[domain]/Jobs/[job] | app/Domains/[domain]/Jobs/[job] |
+| Feature | src/Services/[service]/Features/[feature] | app/Features/[feature] |
+| Service | src/Service/[service] | N/A (app) as equivalent |
+
+### Tests
+One other significant difference is in the location of tests:
+
+|Component|Monolith | Microservice |
+|---------|---------|--------------|
+|Job | src/Domains/[domain]/Tests/Jobs/[JobTest] | tests/Domains/[domain]/Jobs/[JobTest] |
+| Feature | src/Services/[service]/Tests/Features/[FeatureTest] | tests/Features/[Feature]Test.php |
+
+## How To Choose
+It is always [recommended](http://martinfowler.com/bliki/MonolithFirst.html) that you start with a monolith
+and work on it until it gets so big that it is crucial to be dissected into single-purpose services (microservices).
+It would be challenging to be able to figure out the different services your application would need moving forward.
+
+This project is also useful when you know for sure that your application will not have to deal with multiple Services but you would still like to use Lucid.
 
 ---
 
