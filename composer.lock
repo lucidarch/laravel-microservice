@@ -2285,12 +2285,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/lucid-architecture/console-laravel.git",
-                "reference": "dbfa6cc65a6a156292b83ea5b25a28e13a30dea9"
+                "reference": "17ee84b1d431569a923e40d47fd2443c6bc4d99d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lucid-architecture/console-laravel/zipball/dbfa6cc65a6a156292b83ea5b25a28e13a30dea9",
-                "reference": "dbfa6cc65a6a156292b83ea5b25a28e13a30dea9",
+                "url": "https://api.github.com/repos/lucid-architecture/console-laravel/zipball/17ee84b1d431569a923e40d47fd2443c6bc4d99d",
+                "reference": "17ee84b1d431569a923e40d47fd2443c6bc4d99d",
                 "shasum": ""
             },
             "require": {
@@ -2329,7 +2329,7 @@
                 "lucid",
                 "mvc"
             ],
-            "time": "2017-10-31T16:25:24+00:00"
+            "time": "2017-10-31T17:08:47+00:00"
         },
         {
             "name": "mockery/mockery",
