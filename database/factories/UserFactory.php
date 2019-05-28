@@ -1,5 +1,6 @@
 <?php
 
+use Framework\User;
 use Faker\Generator as Faker;
 
 /*
@@ -13,7 +14,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(Framework\User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
